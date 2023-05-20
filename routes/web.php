@@ -34,7 +34,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('post-replay', [ReplayContrroler::class,'commentReplay'])->name('replay');
 
-    Route::post('post-add-favourite_', [FavouriteContrroler::class,'favourite_'])->name('add_favourite_');
+    Route::post('post-add-favourite_', [FavouriteContrroler::class,'favourite'])->name('add_favourite_');
 });
 
 // Admin route

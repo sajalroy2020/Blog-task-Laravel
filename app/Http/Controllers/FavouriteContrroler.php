@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class FavouriteContrroler extends Controller
 {
-    public function favourite_(Request $request){
+    public function favourite(Request $request){
         $userId = Auth::id();
         $favourite_id = Favourite::where('post_id', $request->post_id)->where('user_id', $userId)->value('id');
         $favourite_value = Favourite::where('id', $favourite_id)->value('is_favourite');
