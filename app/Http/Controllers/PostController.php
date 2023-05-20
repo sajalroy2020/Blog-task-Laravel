@@ -52,11 +52,11 @@ class PostController extends Controller
 
     public function details($id)
     {
-        $user_id = Auth::id();
+        $userId = Auth::id();
         $data['postsDetails'] = Post::find($id);
         $data['postsComments'] = Comment::with(['user'])->where('post_id', $id)->get();
         $data['commentsReplays'] = Replay::with(['user'])->where('post_id', $id)->get();
-        $data['favourite'] = Favourite::where('post_id', $id)->where('user_id', $user_id)->value('is_favourite');
+        $data['favourite'] = Favourite::where('post_id', $id)->where('user_id', $userId)->value('is_favourite');
 
         return view('single_post', $data);
     }
@@ -70,8 +70,6 @@ class PostController extends Controller
 
     public function update(PostRequest $request, $id)
     {
-        // dd($request->all());
-
         $formData = $request->validated();
 
         if($request->has('published_at')){

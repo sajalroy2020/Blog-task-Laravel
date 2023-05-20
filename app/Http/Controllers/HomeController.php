@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function Home(){
+    public function home(){
         $data['posts'] = Post::with(['author', 'category'])->paginate();
         return view('home', $data);
     }

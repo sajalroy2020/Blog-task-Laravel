@@ -11,11 +11,11 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function Signup(){
+    public function signup(){
        return view('auth.signup');
     }
 
-    public function SignupStore(SignupRequest $request){
+    public function signupStore(SignupRequest $request){
         $validateData = $request->validated();
         if (User::create($validateData)) {
             return redirect()->route('signin')->with('SUCCESS_MESSAGE', 'you have been registerd successfully');
@@ -23,11 +23,11 @@ class UserController extends Controller
         return redirect()->back()->withInput()->with('ERROR_MESSAGE', 'something went rong !..');
     }
 
-    public function Signin(){
+    public function signin(){
         return view('auth.signin');
      }
 
-     public function SigninStore(SigninRequest $request){
+     public function signinStore(SigninRequest $request){
         $user = User::where('email', $request->get('email'))->first();
 
         if (!$user) {
@@ -41,7 +41,7 @@ class UserController extends Controller
         return redirect()->route('home')->with('SUCCESS_MESSAGE', 'you have been registerd successfully');
     }
 
-    public function Logout(){
+    public function logout(){
         if(Auth::check()){
             Auth::logout();
         }
