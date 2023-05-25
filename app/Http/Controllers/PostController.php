@@ -57,7 +57,6 @@ class PostController extends Controller
         $data['postsComments'] = Comment::with(['user'])->where('post_id', $id)->get();
         $data['commentsReplays'] = Replay::with(['user'])->where('post_id', $id)->get();
         $data['favourite'] = Favourite::where('post_id', $id)->where('user_id', $userId)->value('is_favourite');
-
         return view('single_post', $data);
     }
 
@@ -68,33 +67,58 @@ class PostController extends Controller
         return view('editPost', $data);
     }
 
-    public function update(PostRequest $request, $id)
-    {
-        $formData = $request->validated();
+    // public function update(PostRequest $request, $id)
+    // {
+    //     $formData = $request->validated();
 
-        if($request->has('published_at')){
-            $formData['published_at'] = now();
-        }
+    //     if($request->has('published_at')){
+    //         $formData['published_at'] = now();
+    //     }
 
+    //     $imgPath = '';
+    //     $deleteOldImg = "cover/".$formData->cover_image;
+    //     if($image = $request->file($formData['cover_image']) && $image = $formData['cover_image']){
+    //        if (File::exists("cover/".$deleteOldImg)) {
+    //           File::delete("cover/".$deleteOldImg);
+    //        }
+    //        $imgPath = time().'.'.$image->getClientOriginalExtension();
+    //        $image->move(\public_path("/cover"),$imgPath);
+    //     }else{
+    //        $imgPath = $formData->cover_image;
+    //     }
+    //     $formData['cover_image'] = $imgPath;
+
+
+    //     if (Post::findOrFail($id)->update($formData)) {
+    //         return redirect()->route('postList')->with('SUCCESS_MESSAGE', 'Post Updated successfully');
+    //     }
+    //     return redirect()->back()->withInput()->with('ERROR_MESSAGE', 'something went rong !..');
+    // }
+    public function update(Request $request, $id){
+
+        $updateData = Post::findOrFail($id);
         $imgPath = '';
-        $deleteOldImg = "cover/".$formData->cover_image;
-        if($image = $request->file($formData['cover_image']) && $image = $formData['cover_image']){
-           if (File::exists("cover/".$deleteOldImg)) {
-              File::delete("cover/".$deleteOldImg);
+        $deleteOldImg = 'cover/'.$updateData->cover_image;
+
+        if($image = $request->file('cover_image')){
+           if (File::exists($deleteOldImg)) {
+              File::delete($deleteOldImg);
            }
            $imgPath = time().'.'.$image->getClientOriginalExtension();
-           $image->move(\public_path("/cover"),$imgPath);
+           $image->move('cover/', $imgPath);
         }else{
-           $imgPath = $formData->cover_image;
+           $imgPath = $updateData->product_img;
         }
-        $formData['cover_image'] = $imgPath;
 
-
-        if (Post::findOrFail($id)->update($formData)) {
-            return redirect()->route('postList')->with('SUCCESS_MESSAGE', 'Post Updated successfully');
-        }
-        return redirect()->back()->withInput()->with('ERROR_MESSAGE', 'something went rong !..');
+        Post::findOrFail($id)->update([
+            'category_id'=> $request->category_id,
+            'title'=>$request->title,
+            'description'=>$request->description,
+            'cover_image'=>$imgPath,
+        ]);
+        return redirect()->route('postList')->with('SUCCESS_MESSAGE', 'Post updade successfully');
     }
+
 
     public function destroy($id)
     {

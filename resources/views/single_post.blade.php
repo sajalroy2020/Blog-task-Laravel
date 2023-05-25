@@ -5,7 +5,7 @@
 <div class="mt-4 mb-3">
     <h2>{{$postsDetails->title}}</h2>
     <div>
-        <img style="height: 400px" src="{{ asset('cover/'.$postsDetails->cover_image) }}" alt="cover-image">
+        <img style="height: 200px" src="{{ asset('cover/'.$postsDetails->cover_image) }}" alt="cover-image">
     </div>
     <p class="mb-3">{{$postsDetails->description}}</p>
     <h6>Author Name: <b>{{$postsDetails->author->name}}</b></h6>
@@ -13,9 +13,9 @@
     <small class="text-danger my-3">{{$postsDetails->updated_at}}</small>
 </div>
 
-<div class="mb-4 d-flex">
-    <h5 class="me-4">Add favourite_</h5>
-    <form action="{{route('add_favourite_')}}" method="POST">
+<div class="mb-4 d-flex align-items-center">
+    <h5 class="me-4"> Favourite_</h5>
+    <form action="{{route('add_favourite_')}}" method="POST" class="py-2 px-1 rounded-circle shadow border">
         @csrf
         <input type="hidden" name="post_id" value="{{$postsDetails->id}}">
         @if ($favourite == 1)
